@@ -1,9 +1,11 @@
 package edu.cnm.deepdive.megamillions.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -37,10 +39,11 @@ public class PickAdapter extends RecyclerView.Adapter<PickAdapter.Holder> {
   @Override
   public void onBindViewHolder(@NonNull Holder holder, int position) {
     holder.bind(); // TODO Pass current PickWithNumbers instance.
-    if (position % 2 == 1) {
-      holder.itemView.setBackgroundColor(Color.argb(32, 0, 0, 0));
-    }
-    // TODO See if there's a better way to do alternate-row shading.
+    // TODO Note that ternary (or if-else) is needed to deal with re-bound holders.
+    int background = (position % 2 == 0)
+        ? ContextCompat.getColor(context, R.color.pickBackground)
+        : ContextCompat.getColor(context, R.color.pickBackgroundAlternate);
+    holder.itemView.setBackgroundColor(background);
   }
 
   @Override
@@ -52,14 +55,19 @@ public class PickAdapter extends RecyclerView.Adapter<PickAdapter.Holder> {
       implements View.OnCreateContextMenuListener {
 
     private static final int PICK_LENGTH = 6;
+    private static final String ID_RES_TYPE = "id";
+    private static final String NUM_ID_FORMAT = "num_%d";
+
     private TextView[] numbers;
 
     public Holder(@NonNull View view) {
       super(view);
+      Resources res = context.getResources();
+      String pkg = context.getPackageName();
       view.setOnCreateContextMenuListener(this);
       numbers = new TextView[PICK_LENGTH];
       for (int i = 0; i < PICK_LENGTH; i++) {
-        int id = context.getResources().getIdentifier("num_" + i, "id", context.getPackageName());
+        int id = res.getIdentifier(String.format(NUM_ID_FORMAT, i), ID_RES_TYPE, pkg);
         numbers[i] = view.findViewById(id);
       }
     }
@@ -68,7 +76,7 @@ public class PickAdapter extends RecyclerView.Adapter<PickAdapter.Holder> {
       // TODO Use PickWithNumbers instance.
       int[] numbers = picks.get(getAdapterPosition());
       for (int i = 0; i < numbers.length; i++) {
-        this.numbers[i].setText(Integer.toString(numbers[i]));
+        this.numbers[i].setText(context.getString(R.string.pick_number_format, numbers[i]));
       }
     }
 
@@ -77,6 +85,7 @@ public class PickAdapter extends RecyclerView.Adapter<PickAdapter.Holder> {
       menu.add(R.string.delete_pick).setOnMenuItemClickListener((item) -> {
         picks.remove(getAdapterPosition());
         notifyItemRemoved(getAdapterPosition());
+        notifyItemRangeChanged(getAdapterPosition(), getItemCount() - getAdapterPosition());
         return true;
       });
     }

@@ -3,8 +3,8 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:paddingTop="4dp"
-  android:paddingBottom="4dp"
+  android:paddingTop="@dimen/pick_padding"
+  android:paddingBottom="@dimen/pick_padding"
   xmlns:app="http://schemas.android.com/apk/res-auto">
 
   // TODO Define and use styles for numbers; different styles for last number.
@@ -55,36 +55,42 @@
     android:id="@+id/num_0"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    style="@style/PickNumber"
     app:layout_constraintEnd_toEndOf="@id/guideline_0"/>
 
   <TextView
     android:id="@+id/num_1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    style="@style/PickNumber"
     app:layout_constraintEnd_toEndOf="@id/guideline_1"/>
 
   <TextView
     android:id="@+id/num_2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    style="@style/PickNumber"
     app:layout_constraintEnd_toEndOf="@id/guideline_2"/>
 
   <TextView
     android:id="@+id/num_3"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    style="@style/PickNumber"
     app:layout_constraintEnd_toEndOf="@id/guideline_3"/>
 
   <TextView
     android:id="@+id/num_4"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    style="@style/PickNumber"
     app:layout_constraintEnd_toEndOf="@id/guideline_4"/>
 
   <TextView
     android:id="@+id/num_5"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    style="@style/SupplementaryPickNumber"
     app:layout_constraintEnd_toEndOf="@id/guideline_5"/>
 
 </android.support.constraint.ConstraintLayout>
